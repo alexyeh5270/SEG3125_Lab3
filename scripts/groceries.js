@@ -79,6 +79,7 @@ var products = [
 
 function restrictListProducts(prods, restriction) {
   let product_names = [];
+  prods.sort((a, b) => a.price - b.price);
   for (let i = 0; i < prods.length; i += 1) {
     if (
       restriction == "Vegetarian&GlutenFree" &&

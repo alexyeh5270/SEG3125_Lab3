@@ -13,6 +13,7 @@ body {
     Cantarell, sans-serif;
   background-color: #f5f5f5;
   padding: 20px;
+  font-size: 23px;
 }
 
 h1 {
@@ -193,4 +194,44 @@ button.block:hover {
   border-radius: 4px;
   border: 1px solid #eee;
   margin-top: 15px;
+}
+/* MOD: store name styling (required) */
+.storeName { /* MOD: make store name visible and centered */
+  text-align: center;
+  font-size: 2rem; 
+  margin-bottom: 20px; 
+}
+
+/* MOD: signature footer styling (required) */
+.signature { 
+  margin-top: 30px; 
+  text-align: center; 
+  color: #999; 
+  font-size: 12px; 
+}
+
+/* MOD: simple layout box for client options */
+.optionsBox { 
+  margin-bottom: 15px; 
+  display: flex; 
+  gap: 20px; 
+  flex-wrap: wrap; 
+}
+
+/* MOD : large text mode for Lucie */
+body.textSmall { 
+  font-size: 20px;
+}
+
+body.textMedium { 
+  font-size: 26px; /
+}
+
+body.textLarge { 
+  font-size: 34px; 
+}
+
+/* MOD: force cart/product text to inherit body font size */
+#displayCart, #displayProduct, .cartItem, .productItem, .cartItem *, .productItem * { /* MOD */
+  font-size: inherit; /* MOD: inherit from body.textSmall/textMedium/textLarge */
 }

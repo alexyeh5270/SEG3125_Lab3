@@ -6,6 +6,7 @@ var products = [
     name: "Brocoli",
     vegetarian: true,
     glutenFree: true,
+    organic: true, // add organic field to each product (required)
     price: 1.99,
     imageUrl: "assets/broccoli.png",
   },
@@ -13,6 +14,7 @@ var products = [
     name: "Bread",
     vegetarian: true,
     glutenFree: false,
+    organic: false, // add organic field to each product (required)
     price: 2.35,
     imageUrl: "assets/bread.png",
   },
@@ -20,6 +22,7 @@ var products = [
     name: "Salmon",
     vegetarian: false,
     glutenFree: true,
+    organic: true, // add organic field to each product (required)
     price: 10.0,
     imageUrl: "assets/salmon.png",
   },
@@ -27,6 +30,7 @@ var products = [
     name: "Potato",
     vegetarian: true,
     glutenFree: true,
+    organic: false, // add organic field to each product (required)
     price: 1.49,
     imageUrl: "assets/potato.png",
   },
@@ -34,6 +38,7 @@ var products = [
     name: "Carrot",
     vegetarian: true,
     glutenFree: true,
+    organic: true, // add organic field to each product (required)
     price: 1.29,
     imageUrl: "assets/carrot.png",
   },
@@ -41,6 +46,7 @@ var products = [
     name: "Pasta",
     vegetarian: true,
     glutenFree: false,
+    organic: false, // add organic field to each product (required)
     price: 2.99,
     imageUrl: "assets/pasta.png",
   },
@@ -48,6 +54,7 @@ var products = [
     name: "Celery",
     vegetarian: true,
     glutenFree: true,
+    organic: true, // add organic field to each product (required)
     price: 1.99,
     imageUrl: "assets/celery.png",
   },
@@ -55,6 +62,7 @@ var products = [
     name: "Chicken",
     vegetarian: false,
     glutenFree: true,
+    organic: false, // add organic field to each product (required)
     price: 7.49,
     imageUrl: "assets/chicken.png",
   },
@@ -62,6 +70,7 @@ var products = [
     name: "Rice",
     vegetarian: true,
     glutenFree: true,
+    organic: false, // add organic field to each product (required)
     price: 3.99,
     imageUrl: "assets/rice.png",
   },
@@ -69,6 +78,7 @@ var products = [
     name: "Biscuits",
     vegetarian: true,
     glutenFree: false,
+    organic: false, // add organic field to each product (required)
     price: 3.49,
     imageUrl: "assets/biscuits.png",
   },
@@ -79,22 +89,30 @@ var products = [
 
 function restrictListProducts(prods, restriction) {
   let product_names = [];
-  prods.sort((a, b) => a.price - b.price);
-  for (let i = 0; i < prods.length; i += 1) {
-    if (
-      restriction == "Vegetarian&GlutenFree" &&
-      prods[i].vegetarian == true &&
-      prods[i].glutenFree == true
-    ) {
-      product_names.push(prods[i].name);
-    } else if (restriction == "Vegetarian" && prods[i].vegetarian == true) {
-      product_names.push(prods[i].name);
-    } else if (restriction == "GlutenFree" && prods[i].glutenFree == true) {
-      product_names.push(prods[i].name);
-    } else if (restriction == "None") {
-      product_names.push(prods[i].name);
+// sort a shallow copy to avoid mutating the global products array; stable list + sorted by price (required)
+  let sortedProds = [...prods].sort((a, b) => a.price - b.price); 
+
+//  ensures display is sorted by price (required)
+  for (let i = 0; i < sortedProds.length; i += 1)  { 
+    let p = sortedProds[i]; 
+
+    // MOD: restriction is now an object: { vegetarian: bool, glutenFree: bool, organicPref: "any"|"organic"|"nonOrganic" }
+    let okVeg = !restriction.vegetarian || p.vegetarian === true; // MOD: supports vegetarian OR not
+    let okGluten = !restriction.glutenFree || p.glutenFree === true; // MOD: supports gluten-free OR not
+
+    // MOD: apply organic preference (required)
+    let okOrganic =
+      restriction.organicPref === "any" ||
+      (restriction.organicPref === "organic" && p.organic === true) ||
+      (restriction.organicPref === "nonOrganic" && p.organic === false);
+
+    // ORIGINAL: long if/else chain on string restriction values...
+    // MOD: unified condition supports vegetarian AND/OR gluten-free plus organic preference
+    if (okVeg && okGluten && okOrganic) { // combined filter logic (required)
+      product_names.push(p.name); // keep return type the same (names)
     }
   }
+
   return product_names;
 }
 
@@ -102,7 +120,7 @@ function restrictListProducts(prods, restriction) {
 function getTotalPrice(chosenProducts) {
   var totalPrice = 0.0;
   for (let i = 0; i < products.length; i += 1) {
-    if (chosenProducts.indexOf(products[i].name) > -1) {
+    if (chosenProducts.includes(products[i].name)) {
       totalPrice += products[i].price;
     }
   }

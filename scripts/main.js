@@ -2,57 +2,78 @@
 // It is adapted from https://www.w3schools.com/howto/howto_js_tabs.asp
 
 function openInfo(evt, tabName) {
-  // Get all elements with class="tabcontent" and hide them
   tabcontent = document.getElementsByClassName("tabcontent");
   for (i = 0; i < tabcontent.length; i++) {
     tabcontent[i].style.display = "none";
   }
 
-  // Get all elements with class="tablinks" and remove the class "active"
   tablinks = document.getElementsByClassName("tablinks");
   for (i = 0; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(" active", "");
   }
 
-  // Show the current tab, and add an "active" class to the button that opened the tab
   document.getElementById(tabName).style.display = "block";
   evt.currentTarget.className += " active";
 }
 
+// MOD: read independent user preferences (vegetarian AND/OR gluten-free + organic)
+function getUserRestriction() { // MOD: helper to build restriction object (required)
+  var vegEl = document.getElementById("chkVegetarian"); // MOD: new checkbox id
+  var glutenEl = document.getElementById("chkGlutenFree"); // MOD: new checkbox id
+  var organicEl = document.querySelector('input[name="organicPref"]:checked'); // MOD: new radio group
+
+  return {
+    vegetarian: vegEl ? vegEl.checked : false, // MOD: supports OR by being independent
+    glutenFree: glutenEl ? glutenEl.checked : false, // MOD
+    organicPref: organicEl ? organicEl.value : "any", // MOD: "any" | "organic" | "nonOrganic"
+  };
+}
+
+// MOD (optional): Lucie large text toggle
+function applyTextSize() { // MOD: single handler for all three options
+  const checked = document.querySelector('input[name="textSize"]:checked'); 
+  document.body.classList.remove("textSmall", "textMedium", "textLarge"); //  reset
+
+  if (!checked) return; // MOD: supports "cleared" state
+
+  if (checked.value === "small") document.body.classList.add("textSmall");  
+  if (checked.value === "medium") document.body.classList.add("textMedium"); 
+  if (checked.value === "large") document.body.classList.add("textLarge"); 
+}
+
+function clearTextSize() { // MOD: uncheck all radios + reset classes
+  document.querySelectorAll('input[name="textSize"]').forEach(r => r.checked = false); 
+  document.body.classList.remove("textSmall", "textMedium", "textLarge");
+}
+
+
 // generate a checkbox list from a list of products
-// it makes each product name as the label for the checkbos
-
 function populateListProductChoices(slct1, slct2) {
-  var s1 = document.getElementById(slct1);
+  // ORIGINAL: var s1 = document.getElementById(slct1);
+  var s1 = document.getElementById(slct1); // MOD: kept only for compatibility (filtering no longer relies on select)
+
   var s2 = document.getElementById(slct2);
-
-  // s2 represents the <div> in the Products tab, which shows the product list, so we first set it empty
   s2.innerHTML = "";
-
-  // obtain a reduced list of products based on restrictions
-  var optionArray = restrictListProducts(products, s1.value);
-
-  // for each item in the array, create a checkbox element, each containing information such as:
-  // <input type="checkbox" name="product" value="Bread">
-  // <label for="Bread">Bread/label><br>
-
-  for (i = 0; i < optionArray.length; i++) {
-    var productName = optionArray[i];
-    // find the product object to get the image URL
+// MOD: use checkbox/radio restrictions (+ organic)instead of select value
+  var optionArray = restrictListProducts(products, getUserRestriction());  
+  
+  for (let i = 0; i < optionArray.length; i++) { 
     var product = products.find((p) => p.name === productName);
 
-    // create a container for the product item
     var productItem = document.createElement("div");
     productItem.className = "productItem";
+    productItem.style.fontSize = "inherit"; // ensure product list text scales with body text size classes
 
-    // create the checkbox and add in HTML DOM
     var checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.name = "product";
     checkbox.value = productName;
+
+    // ORIGINAL: (no checkbox id)
+    // MOD: give checkbox a valid id so label click toggles the checkbox (improves usability)
+    checkbox.id = "prod-" + productName.replace(/\s+/g, "-"); // MOD: remove spaces for valid HTML id
     productItem.appendChild(checkbox);
 
-    // create and add image
     if (product) {
       var img = document.createElement("img");
       img.src = product.imageUrl;
@@ -60,21 +81,21 @@ function populateListProductChoices(slct1, slct2) {
       productItem.appendChild(img);
     }
 
-    // create a label for the checkbox, and also add in HTML DOM
-    var label = document.createElement("label");
-    label.htmlFor = productName;
-    label.appendChild(
-      document.createTextNode(productName + " - $" + product.price),
-    );
-    productItem.appendChild(label);
+    var organicTag = product && product.organic ? " (Organic)" : "";
 
+    var label = document.createElement("label");
+    label.htmlFor = checkbox.id; // connect label to checkbox id so clicking label toggles it
+    label.style.fontSize = "inherit"; // override CSS fixed label font-size so text-size choice affects product list too
+
+    label.appendChild(
+      document.createTextNode(productName + organicTag + " - $" + product.price),
+    );
+
+    productItem.appendChild(label);
     s2.appendChild(productItem);
   }
 }
 
-// This function is called when the "Add selected items to cart" button in clicked
-// The purpose is to build the HTML to be displayed (a Paragraph)
-// We build a paragraph to contain the list of selected items, and the total price
 
 function selectedItems() {
   var ele = document.getElementsByName("product");
@@ -83,20 +104,17 @@ function selectedItems() {
   var c = document.getElementById("displayCart");
   c.innerHTML = "";
 
-  // build list of selected item
   var para = document.createElement("P");
   para.innerHTML = "You selected : ";
   para.appendChild(document.createElement("br"));
+
   for (i = 0; i < ele.length; i++) {
     if (ele[i].checked) {
-      // find the product object to get the image URL
       var product = products.find((p) => p.name === ele[i].value);
 
-      // create a container for the cart item
       var cartItem = document.createElement("div");
       cartItem.className = "cartItem";
 
-      // create and add image
       if (product) {
         var img = document.createElement("img");
         img.src = product.imageUrl;
@@ -104,9 +122,9 @@ function selectedItems() {
         cartItem.appendChild(img);
       }
 
-      // add product name
+      var organicTag = product && product.organic ? " (Organic)" : ""; 
       cartItem.appendChild(
-        document.createTextNode(ele[i].value + " - $" + product.price),
+        document.createTextNode(ele[i].value + organicTag + " - $" + product.price), 
       );
 
       para.appendChild(cartItem);
@@ -115,11 +133,13 @@ function selectedItems() {
     }
   }
 
-  // add paragraph and total price
   c.appendChild(para);
   c.appendChild(
-    document.createTextNode(
-      "Total Price is: $" + getTotalPrice(chosenProducts),
-    ),
+    document.createTextNode("Total Price is: $" + getTotalPrice(chosenProducts)),
   );
 }
+
+window.addEventListener("DOMContentLoaded", function () { //  auto-open Client tab on load
+  const btn = document.getElementById("defaultOpen");     //  get the real tab button
+  if (btn) btn.click();                                  //  guard in case id is missing
+});

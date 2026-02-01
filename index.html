@@ -1,111 +1,177 @@
-<!DOCTYPE html>
-<html lang="en"> <!-- MOD: add lang for accessibility/semantics -->
+<!doctype html>
+<html lang="en">
+  <!-- MOD: add lang for accessibility/semantics -->
 
-<head>
-  <!-- This style sheet is taken from https://www.w3schools.com/howto/howto_js_tabs.asp -->
+  <head>
+    <!-- This style sheet is taken from https://www.w3schools.com/howto/howto_js_tabs.asp -->
 
-  <title>AAM Grocery Store</title>
-  <link href="styles/style.css" rel="stylesheet" type="text/css">
-</head>
+    <title>AAM Grocery Store</title>
+    <link href="styles/style.css" rel="stylesheet" type="text/css" />
+  </head>
 
-<body>
-  <h1 class="storeName">AAM Grocery Store</h1> <!-- add class hook for styling store name (required styling target) -->
+  <body>
+    <h1 class="storeName">AAM Grocery Store</h1>
+    <!-- add class hook for styling store name (required styling target) -->
 
-  <!-- Tab links, each one with an onclick event associated with it -->
+    <!-- Tab links, each one with an onclick event associated with it -->
     <div class="tab">
       <!-- MOD: add id so JS can auto-click this tab -->
-    <button id="defaultOpen" class="tablinks" onclick="openInfo(event, 'Client')">Client</button> 
+      <button
+        id="defaultOpen"
+        class="tablinks"
+        onclick="openInfo(event, 'Client')"
+      >
+        Client
+      </button>
 
-    <button class="tablinks" onclick="openInfo(event, 'Products')">Products</button>
-    <button class="tablinks" onclick="openInfo(event, 'Cart')">Cart</button>
-  </div>
+      <button class="tablinks" onclick="openInfo(event, 'Products')">
+        Products
+      </button>
+      <button class="tablinks" onclick="openInfo(event, 'Cart')">Cart</button>
+    </div>
 
-  <!-- Tab content -->
-  <div id="Client" class="tabcontent">
-    <h3>Client Information</h3>
-    <p>Tell us a bit about you.</p>
+    <!-- Tab content -->
+    <div id="Client" class="tabcontent">
+      <h3>Client Information</h3>
+      <p>Tell us a bit about you.</p>
 
-    <!-- MOD: replace single select with independent options so user can be vegetarian AND/OR gluten-free (required) -->
-    <fieldset class="optionsBox"> <!-- MOD: grouped controls for clarity -->
-      <legend>Dietary restrictions</legend> <!-- MOD: clearer label than "Choose a Category" -->
-      <label>
-        <input type="checkbox" id="chkVegetarian" onchange="populateListProductChoices('dietSelect', 'displayProduct')" />
-        Vegetarian
-      </label>
-      <label>
-        <input type="checkbox" id="chkGlutenFree" onchange="populateListProductChoices('dietSelect', 'displayProduct')" />
-        Gluten-free (gluten intolerance)
-      </label>
-    </fieldset>
+      <!-- MOD: replace single select with independent options so user can be vegetarian AND/OR gluten-free (required) -->
+      <fieldset class="optionsBox">
+        <!-- MOD: grouped controls for clarity -->
+        <legend>Dietary restrictions</legend>
+        <!-- MOD: clearer label than "Choose a Category" -->
+        <label>
+          <input
+            type="checkbox"
+            id="chkVegetarian"
+            onchange="
+              populateListProductChoices('dietSelect', 'displayProduct')
+            "
+          />
+          Vegetarian
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            id="chkGlutenFree"
+            onchange="
+              populateListProductChoices('dietSelect', 'displayProduct')
+            "
+          />
+          Gluten-free (gluten intolerance)
+        </label>
+      </fieldset>
 
-    <!-- MOD: add organic preference (required) -->
-    <fieldset class="optionsBox"> <!-- MOD -->
-      <legend>Organic preference</legend> <!-- MOD -->
-      <label>
-        <input type="radio" name="organicPref" value="any" checked
-               onchange="populateListProductChoices('dietSelect', 'displayProduct')" />
-        No preference
-      </label>
-      <label>
-        <input type="radio" name="organicPref" value="organic"
-               onchange="populateListProductChoices('dietSelect', 'displayProduct')" />
-        Organic only
-      </label>
-      <label>
-        <input type="radio" name="organicPref" value="nonOrganic"
-               onchange="populateListProductChoices('dietSelect', 'displayProduct')" />
-        Non-organic only
-      </label>
-    </fieldset>
+      <!-- MOD: add organic preference (required) -->
+      <fieldset class="optionsBox">
+        <!-- MOD -->
+        <legend>Organic preference</legend>
+        <!-- MOD -->
+        <label>
+          <input
+            type="radio"
+            name="organicPref"
+            value="any"
+            checked
+            onchange="
+              populateListProductChoices('dietSelect', 'displayProduct')
+            "
+          />
+          No preference
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="organicPref"
+            value="organic"
+            onchange="
+              populateListProductChoices('dietSelect', 'displayProduct')
+            "
+          />
+          Organic only
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="organicPref"
+            value="nonOrganic"
+            onchange="
+              populateListProductChoices('dietSelect', 'displayProduct')
+            "
+          />
+          Non-organic only
+        </label>
+      </fieldset>
 
-    <!-- larger text for Lucie (accessibility) -->
-<fieldset class="optionsBox"> <!-- MOD: aggregate text-size choices -->
-  <legend>Text size</legend> 
-  <label>
-    <input type="radio" name="textSize" value="small" onchange="applyTextSize()" />
-    Small text
-  </label>
-  <label>
-    <input type="radio" name="textSize" value="medium" checked onchange="applyTextSize()" />
-    Middle text
-  </label>
-  <label>
-    <input type="radio" name="textSize" value="large" onchange="applyTextSize()" />
-    Large text
-  </label>
+      <!-- larger text for Lucie (accessibility) -->
+      <fieldset class="optionsBox">
+        <!-- MOD: aggregate text-size choices -->
+        <legend>Text size</legend>
+        <label>
+          <input
+            type="radio"
+            name="textSize"
+            value="small"
+            onchange="applyTextSize()"
+          />
+          Small text
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="textSize"
+            value="medium"
+            checked
+            onchange="applyTextSize()"
+          />
+          Medium text
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="textSize"
+            value="large"
+            onchange="applyTextSize()"
+          />
+          Large text
+        </label>
+      </fieldset>
 
-</fieldset>
+      <!-- MOD: keep an invisible element with the original id to avoid breaking older JS that expects dietSelect -->
+      <select id="dietSelect" name="dietSelect" style="display: none">
+        <!--  compatibility placeholder -->
+        <option value="None">None</option>
+        <!--  default value if JS still reads it -->
+      </select>
+    </div>
 
+    <div id="Products" class="tabcontent">
+      <h3>Your targeted products</h3>
+      <p>We preselected products based on your restrictions.</p>
+      Choose items to buy:
+      <div id="displayProduct"></div>
+      <button
+        id="addCart"
+        type="button"
+        class="block"
+        onclick="selectedItems()"
+      >
+        Add selected items to cart.
+      </button>
+    </div>
 
+    <div id="Cart" class="tabcontent">
+      <h3>Cart</h3>
+      <p>Here is your cart.</p>
+      <div id="displayCart"></div>
+    </div>
 
+    <!-- required signature/footer -->
+    <footer class="signature">
+      Website designed by Alexander Seiffert, Alexander Yeh, and Macintosh Chen
+    </footer>
 
-    <!-- MOD: keep an invisible element with the original id to avoid breaking older JS that expects dietSelect -->
-    <select id="dietSelect" name="dietSelect" style="display:none;"> <!--  compatibility placeholder -->
-      <option value="None">None</option> <!--  default value if JS still reads it -->
-    </select>
-  </div>
-
-  <div id="Products" class="tabcontent">
-    <h3>Your targeted products</h3>
-    <p>We preselected products based on your restrictions.</p>
-    Choose items to buy:
-    <div id="displayProduct"></div>
-    <button id="addCart" type="button" class="block" onclick="selectedItems()">
-      Add selected items to cart.
-    </button>
-  </div>
-
-  <div id="Cart" class="tabcontent">
-    <h3>Cart</h3>
-    <p>Here is your cart.</p>
-    <div id="displayCart"></div>
-  </div>
-
-  <!-- required signature/footer -->
-  <footer class="signature">Website designed by Alexander Seiffert, Alexander Yeh, and Macintosh Chen</footer> 
-
-  <script src="scripts/groceries.js"></script>
-  <script src="scripts/main.js"></script>
-</body>
-
+    <script src="scripts/groceries.js"></script>
+    <script src="scripts/main.js"></script>
+  </body>
 </html>

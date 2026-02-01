@@ -6,7 +6,7 @@ var products = [
     name: "Brocoli",
     vegetarian: true,
     glutenFree: true,
-    organic: true, // add organic field to each product (required)
+    organic: true,
     price: 1.99,
     imageUrl: "assets/broccoli.png",
   },
@@ -14,7 +14,7 @@ var products = [
     name: "Bread",
     vegetarian: true,
     glutenFree: false,
-    organic: false, // add organic field to each product (required)
+    organic: false,
     price: 2.35,
     imageUrl: "assets/bread.png",
   },
@@ -22,7 +22,7 @@ var products = [
     name: "Salmon",
     vegetarian: false,
     glutenFree: true,
-    organic: true, // add organic field to each product (required)
+    organic: true,
     price: 10.0,
     imageUrl: "assets/salmon.png",
   },
@@ -30,7 +30,7 @@ var products = [
     name: "Potato",
     vegetarian: true,
     glutenFree: true,
-    organic: false, // add organic field to each product (required)
+    organic: false,
     price: 1.49,
     imageUrl: "assets/potato.png",
   },
@@ -38,7 +38,7 @@ var products = [
     name: "Carrot",
     vegetarian: true,
     glutenFree: true,
-    organic: true, // add organic field to each product (required)
+    organic: true,
     price: 1.29,
     imageUrl: "assets/carrot.png",
   },
@@ -46,7 +46,7 @@ var products = [
     name: "Pasta",
     vegetarian: true,
     glutenFree: false,
-    organic: false, // add organic field to each product (required)
+    organic: false,
     price: 2.99,
     imageUrl: "assets/pasta.png",
   },
@@ -54,7 +54,7 @@ var products = [
     name: "Celery",
     vegetarian: true,
     glutenFree: true,
-    organic: true, // add organic field to each product (required)
+    organic: true,
     price: 1.99,
     imageUrl: "assets/celery.png",
   },
@@ -62,7 +62,7 @@ var products = [
     name: "Chicken",
     vegetarian: false,
     glutenFree: true,
-    organic: false, // add organic field to each product (required)
+    organic: false,
     price: 7.49,
     imageUrl: "assets/chicken.png",
   },
@@ -70,7 +70,7 @@ var products = [
     name: "Rice",
     vegetarian: true,
     glutenFree: true,
-    organic: false, // add organic field to each product (required)
+    organic: false,
     price: 3.99,
     imageUrl: "assets/rice.png",
   },
@@ -78,7 +78,7 @@ var products = [
     name: "Biscuits",
     vegetarian: true,
     glutenFree: false,
-    organic: false, // add organic field to each product (required)
+    organic: false,
     price: 3.49,
     imageUrl: "assets/biscuits.png",
   },
@@ -89,12 +89,12 @@ var products = [
 
 function restrictListProducts(prods, restriction) {
   let product_names = [];
-// sort a shallow copy to avoid mutating the global products array; stable list + sorted by price (required)
-  let sortedProds = [...prods].sort((a, b) => a.price - b.price); 
+  // sort a shallow copy to avoid mutating the global products array; stable list + sorted by price (required)
+  let sortedProds = [...prods].sort((a, b) => a.price - b.price);
 
-//  ensures display is sorted by price (required)
-  for (let i = 0; i < sortedProds.length; i += 1)  { 
-    let p = sortedProds[i]; 
+  //  ensures display is sorted by price (required)
+  for (let i = 0; i < sortedProds.length; i += 1) {
+    let p = sortedProds[i];
 
     // MOD: restriction is now an object: { vegetarian: bool, glutenFree: bool, organicPref: "any"|"organic"|"nonOrganic" }
     let okVeg = !restriction.vegetarian || p.vegetarian === true; // MOD: supports vegetarian OR not
@@ -108,7 +108,8 @@ function restrictListProducts(prods, restriction) {
 
     // ORIGINAL: long if/else chain on string restriction values...
     // MOD: unified condition supports vegetarian AND/OR gluten-free plus organic preference
-    if (okVeg && okGluten && okOrganic) { // combined filter logic (required)
+    if (okVeg && okGluten && okOrganic) {
+      // combined filter logic (required)
       product_names.push(p.name); // keep return type the same (names)
     }
   }
@@ -117,11 +118,15 @@ function restrictListProducts(prods, restriction) {
 }
 
 // Calculate the total price of items, with received parameter being a list of products
-function getTotalPrice(chosenProducts) {
+function getTotalPrice(chosenProducts, productQuantities) {
   var totalPrice = 0.0;
   for (let i = 0; i < products.length; i += 1) {
     if (chosenProducts.includes(products[i].name)) {
-      totalPrice += products[i].price;
+      var quantity =
+        productQuantities && productQuantities[products[i].name]
+          ? productQuantities[products[i].name]
+          : 1;
+      totalPrice += products[i].price * quantity;
     }
   }
   return totalPrice.toFixed(2);

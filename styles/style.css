@@ -18,6 +18,10 @@
   transition: 0.3s;
 }
 
+.tab input[type=text] {
+  float:right;
+}
+
 /* Change background color of buttons on hover */
 .tab button:hover {
   background-color: #ddd;

@@ -7,6 +7,7 @@ var products = [
     vegetarian: true,
     glutenFree: true,
     organic: true,
+    category: "Vegetables", // MOD: categorize products (Lab 3 structure requirement)
     price: 1.99,
     imageUrl: "assets/broccoli.png",
   },
@@ -15,6 +16,7 @@ var products = [
     vegetarian: true,
     glutenFree: false,
     organic: false,
+    category: "Grains", // MOD: categorize products
     price: 2.35,
     imageUrl: "assets/bread.png",
   },
@@ -23,6 +25,7 @@ var products = [
     vegetarian: false,
     glutenFree: true,
     organic: true,
+    category: "Seafood", // MOD: categorize products
     price: 10.0,
     imageUrl: "assets/salmon.png",
   },
@@ -31,6 +34,7 @@ var products = [
     vegetarian: true,
     glutenFree: true,
     organic: false,
+    category: "Vegetables", // MOD: categorize products
     price: 1.49,
     imageUrl: "assets/potato.png",
   },
@@ -39,6 +43,7 @@ var products = [
     vegetarian: true,
     glutenFree: true,
     organic: true,
+    category: "Vegetables", // MOD: categorize products
     price: 1.29,
     imageUrl: "assets/carrot.png",
   },
@@ -47,6 +52,7 @@ var products = [
     vegetarian: true,
     glutenFree: false,
     organic: false,
+    category: "Grains", // MOD: categorize products
     price: 2.99,
     imageUrl: "assets/pasta.png",
   },
@@ -55,6 +61,7 @@ var products = [
     vegetarian: true,
     glutenFree: true,
     organic: true,
+    category: "Vegetables", // MOD: categorize products
     price: 1.99,
     imageUrl: "assets/celery.png",
   },
@@ -63,6 +70,7 @@ var products = [
     vegetarian: false,
     glutenFree: true,
     organic: false,
+    category: "Meat", // MOD: categorize products
     price: 7.49,
     imageUrl: "assets/chicken.png",
   },
@@ -71,6 +79,7 @@ var products = [
     vegetarian: true,
     glutenFree: true,
     organic: false,
+    category: "Grains", // MOD: categorize products
     price: 3.99,
     imageUrl: "assets/rice.png",
   },
@@ -79,10 +88,12 @@ var products = [
     vegetarian: true,
     glutenFree: false,
     organic: false,
+    category: "Snacks", // MOD: categorize products
     price: 3.49,
     imageUrl: "assets/biscuits.png",
   },
 ];
+
 
 // given restrictions provided, make a reduced list of products
 // prices should be included in this list, as well as a sort based on price

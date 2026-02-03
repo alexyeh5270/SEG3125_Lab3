@@ -16,6 +16,8 @@
   cursor: pointer;
   padding: 14px 16px;
   transition: 0.3s;
+  font-size: inherit;   /* MOD: follow body font-size */
+  font-family: inherit; /* MOD: follow body font-family */
 }
 
 .tab input[type=text] {
@@ -40,12 +42,65 @@
   border-top: none;
 }
 
-/* Display product list in grid */
+/* ORIGINAL:
 #displayProduct {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 15px;
   margin-bottom: 15px;
+}
+*/
+
+/* MOD: #displayProduct becomes an accordion container (not a grid) */
+#displayProduct {
+  margin-bottom: 15px; /* MOD: keep spacing but allow accordion structure */
+}
+
+/* MOD: grid used inside each category panel */
+.productGrid {
+  display: grid; /* MOD: keep your product grid layout inside accordion */
+  grid-template-columns: repeat(4, 1fr); /* MOD */
+  gap: 15px; /* MOD */
+}
+
+/* MOD: accordion (structure pattern) */
+.accordion {
+  width: 100%; /* MOD */
+  text-align: left; /* MOD */
+  background-color: #eee; /* MOD */
+  border: 1px solid #ccc; /* MOD */
+  padding: 12px 16px; /* MOD */
+  cursor: pointer; /* MOD */
+  transition: 0.2s; /* MOD */
+  font-size: inherit; /* MOD: follow body font size choice */
+  font-family: inherit; /* MOD */
+}
+
+.accordion:hover {
+  background-color: #ddd; /* MOD */
+}
+
+.accordion.active {
+  background-color: #ccc; /* MOD */
+}
+
+.panel {
+  overflow: hidden; /* MOD */
+  max-height: 0; /* MOD: collapsed by default */
+  transition: max-height 0.2s ease-out; /* MOD */
+  border-left: 1px solid #ccc; /* MOD */
+  border-right: 1px solid #ccc; /* MOD */
+  border-bottom: 1px solid #ccc; /* MOD */
+  background-color: #fff;   /* MOD: ensure panel area is white */
+  margin-bottom: 10px;      /* MOD: white slit before next category header */
+  padding-top: 3px;        /* MOD: white slit between header and content */
+  padding-bottom: 10px;     /* MOD: extra space at bottom when quantity input appears */
+}
+
+
+
+.panelInner {
+  padding: 12px 0; /* MOD: spacing inside panel */
 }
 
 /* Style product items with image */
@@ -71,7 +126,7 @@
   flex: 1;
   cursor: pointer;
   color: #333;
-  font-size: 14px;
+  font-size: inherit;  /* MOD: allow body text size to affect product labels */
 }
 
 .productImage {
@@ -92,6 +147,23 @@
   background-color: #f9f9f9;
   border-radius: 4px;
   border: 1px solid #eee;
+  font-size: inherit; /* MOD: allow body text size to affect cart labels */
+}
+
+.qtyInput {              /* MOD: make quantity control visible and not cramped */
+  margin-top: 100px;       /* MOD */
+  width: 50px;           /* MOD: more room for arrows */
+  font-size: inherit;    /* MOD: follow body text size */
+  box-sizing: border-box;/* MOD */
+}
+
+.productItem {           /* MOD: more room inside product cards */
+  padding-bottom: 33px;  /* MOD */
+}
+
+
+body {
+  font-size: 18px; /* MOD: default font-size on initial load */
 }
 
 .cartImage {
@@ -104,13 +176,21 @@
 
 /* Text size classes for accessibility */
 body.textSmall {
-  font-size: 14px;
+  font-size: 15px;
 }
 
 body.textMedium {
-  font-size: 16px;
+  font-size: 19px;
 }
 
 body.textLarge {
-  font-size: 20px;
+  font-size: 26px;
+}
+
+/* MOD: signature/footer styling */
+.signature {
+  font-size: 15px;        /* MOD: smaller text */
+  text-align: center;     /* MOD: middle-aligned */
+  color: #888;            /* MOD: grey color */
+  margin-top: 20px;       /* MOD: spacing above footer */
 }

@@ -59,54 +59,118 @@ function clearTextSize() {
 // generate a checkbox list from a list of products
 function populateListProductChoices(slct1, slct2) {
   // ORIGINAL: var s1 = document.getElementById(slct1);
-  var s1 = document.getElementById(slct1); // MOD: kept only for compatibility (filtering no longer relies on select)
+  var s1 = document.getElementById(slct1); // MOD: kept for compatibility; filtering now uses checkboxes/radios
+
   var s2 = document.getElementById(slct2);
   if (!s2) return;
   s2.innerHTML = "";
-  // MOD: use checkbox/radio restrictions (+ organic) instead of select value
-  var optionArray = restrictListProducts(products, getUserRestriction());
 
-  for (let i = 0; i < optionArray.length; i++) {
-    var productName = optionArray[i];
-    var product = products.find((p) => p.name === productName);
+  // ORIGINAL: var optionArray = restrictListProducts(products, getUserRestriction());
+  // MOD: keep your existing filter output (names), then map to product objects for categorization
+  var optionArray = restrictListProducts(products, getUserRestriction()); // MOD: diet + gluten + organic (already sorted by price)
+  var filteredProds = optionArray.map((nm) => products.find((p) => p.name === nm)).filter(Boolean); // MOD: convert names -> product objects
 
-    var productItem = document.createElement("div");
-    productItem.className = "productItem";
-    productItem.style.fontSize = "inherit"; // ensure product list text scales with body text size classes
+  // MOD: group filtered products by category (structure requirement)
+  var byCat = {}; // MOD
+  for (let i = 0; i < filteredProds.length; i++) { // MOD: block-scoped i
+    var p = filteredProds[i]; // MOD
+    var cat = p.category ? p.category : "Other"; // MOD: fallback category
+    if (!byCat[cat]) byCat[cat] = []; // MOD
+    byCat[cat].push(p); // MOD
+  }
 
-    var checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.name = "product";
-    checkbox.value = productName;
-    checkbox.addEventListener("change", addQuantityInput);
+  var categories = Object.keys(byCat); // MOD
+  categories.sort(); // MOD: predictable category order
 
-    // ORIGINAL: (no checkbox id)
-    // MOD: give checkbox a valid id so label click toggles the checkbox (improves usability)
-    checkbox.id = "prod-" + productName.replace(/\s+/g, "-"); // MOD: remove spaces for valid HTML id
-    productItem.appendChild(checkbox);
+  // MOD: build accordion UI (one category visible at a time)
+  for (let c = 0; c < categories.length; c++) { // MOD
+    var catName = categories[c]; // MOD
 
-    if (product) {
-      var img = document.createElement("img");
-      img.src = product.imageUrl;
-      img.className = "productImage";
-      productItem.appendChild(img);
+    var btn = document.createElement("button"); // MOD
+    btn.type = "button"; // MOD
+    btn.className = "accordion"; // MOD
+    btn.textContent = catName; // MOD
+    s2.appendChild(btn); // MOD
+
+    var panel = document.createElement("div"); // MOD
+    panel.className = "panel"; // MOD
+
+    var inner = document.createElement("div"); // MOD
+    inner.className = "panelInner"; // MOD
+
+    var grid = document.createElement("div"); // MOD
+    grid.className = "productGrid"; // MOD: use grid inside category
+
+    // MOD: ensure each category is sorted by price (even after grouping)
+    byCat[catName].sort((a, b) => a.price - b.price); // MOD
+
+    // MOD: create product cards inside this category panel
+    for (let j = 0; j < byCat[catName].length; j++) { // MOD
+      var product = byCat[catName][j]; // MOD
+      var productName = product.name; // MOD
+
+      var productItem = document.createElement("div");
+      productItem.className = "productItem";
+      productItem.style.fontSize = "inherit"; // MOD: allow text-size choice to affect product entries
+
+      var checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.name = "product";
+      checkbox.value = productName;
+      checkbox.addEventListener("change", addQuantityInput); // MOD: keep your quantity behavior
+
+      checkbox.id = "prod-" + productName.replace(/\s+/g, "-"); // MOD
+      productItem.appendChild(checkbox);
+
+      var img = document.createElement("img"); // MOD
+      img.src = product.imageUrl; // MOD
+      img.className = "productImage"; // MOD
+      productItem.appendChild(img); // MOD
+
+      var organicTag = product.organic ? " (Organic)" : ""; // MOD
+
+      var label = document.createElement("label");
+      label.htmlFor = checkbox.id; // MOD
+      label.style.fontSize = "inherit"; // MOD
+
+      label.appendChild(
+        document.createTextNode(productName + organicTag + " - $" + product.price),
+      );
+      productItem.appendChild(label);
+
+      grid.appendChild(productItem); // MOD
     }
 
-    var organicTag = product && product.organic ? " (Organic)" : "";
-
-    var label = document.createElement("label");
-    label.htmlFor = checkbox.id; // connect label to checkbox id so clicking label toggles it
-    label.style.fontSize = "inherit"; // override CSS fixed label font-size so text-size choice affects product list too
-
-    label.appendChild(
-      document.createTextNode(
-        productName + organicTag + " - $" + product.price,
-      ),
-    );
-
-    productItem.appendChild(label);
-    s2.appendChild(productItem);
+    inner.appendChild(grid); // MOD
+    panel.appendChild(inner); // MOD
+    s2.appendChild(panel); // MOD
   }
+
+  // MOD: wire accordion behavior (close others when one opens)
+  var acc = s2.getElementsByClassName("accordion"); // MOD
+  for (let k = 0; k < acc.length; k++) { // MOD
+    acc[k].addEventListener("click", function () { // MOD
+      for (let m = 0; m < acc.length; m++) { // MOD
+        if (acc[m] !== this) { // MOD
+          acc[m].classList.remove("active"); // MOD
+          var otherPanel = acc[m].nextElementSibling; // MOD
+          if (otherPanel) otherPanel.style.maxHeight = null; // MOD
+        }
+      }
+
+      this.classList.toggle("active"); // MOD
+      var panel = this.nextElementSibling; // MOD
+      if (!panel) return; // MOD
+      if (panel.style.maxHeight) {
+        panel.style.maxHeight = null; // MOD: collapse
+      } else {
+        panel.style.maxHeight = panel.scrollHeight + "px"; // MOD: expand to fit content
+      }
+    });
+  }
+
+  // MOD: open the first category by default (so user sees items immediately)
+  if (acc.length > 0) acc[0].click(); // MOD
 }
 
 //adds a quantity input field when a product is selected
@@ -173,18 +237,25 @@ function selectedItems() {
       var quantity = quantityInput ? quantityInput.value : "1";
 
       // add product name with quantity and price on separate lines
-      cartItem.appendChild(document.createTextNode(ele[i].value));
+      var qty = quantityInput ? parseInt(quantityInput.value, 10) : 1; 
+      var unitPrice = product.price.toFixed(2); 
+      var line1 = document.createElement("span"); 
+      line1.textContent = ele[i].value + organicTag + " - $" + unitPrice + " each"; 
+      cartItem.appendChild(line1);
+
+      cartItem.appendChild(document.createElement("br")); 
+      cartItem.appendChild(document.createElement("br")); 
+
+      var line2 = document.createElement("span"); 
+      line2.textContent = "Qty: " + qty; 
+      cartItem.appendChild(line2); 
+
       cartItem.appendChild(document.createElement("br"));
-      cartItem.appendChild(document.createTextNode("Qty: " + quantity));
-      cartItem.appendChild(document.createElement("br"));
-      cartItem.appendChild(
-        document.createTextNode(
-          "Price: $" + (product.price * quantity).toFixed(2), //sums total price for each item based on quantity
-        ),
-        document.createTextNode(
-          ele[i].value + organicTag + " - $" + product.price,
-        ),
-      );
+      cartItem.appendChild(document.createElement("br")); 
+
+      var line3 = document.createElement("span");
+      line3.textContent = "Price: $" + (product.price * qty).toFixed(2);
+      cartItem.appendChild(line3);
 
       para.appendChild(cartItem);
       para.appendChild(document.createElement("br"));

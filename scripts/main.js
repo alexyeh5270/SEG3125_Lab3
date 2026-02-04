@@ -280,3 +280,9 @@ window.addEventListener("DOMContentLoaded", function () {
   // Populate products list on page load
   populateListProductChoices("dietSelect", "displayProduct");
 });
+
+const search = document.getElementById("searchBar");
+
+search.addEventListener("input", function () {
+  populateListProductChoices("dietSelect", "displayProduct");
+});

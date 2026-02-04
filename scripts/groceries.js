@@ -125,6 +125,20 @@ function restrictListProducts(prods, restriction) {
     }
   }
 
+  return searchProducts(product_names,document.getElementById("searchBar").value);
+}
+
+function searchProducts(prods, searchTerm) {
+  let product_names = [];
+  let lowerSearchTerm = searchTerm.toLowerCase();
+
+  for (let i = 0; i < prods.length; i += 1) {
+    let p = prods[i];
+    if (p.toLowerCase().includes(lowerSearchTerm)) {
+      product_names.push(p);
+    }
+  }
+
   return product_names;
 }
 

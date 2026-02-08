@@ -174,11 +174,14 @@ for (var category in categories) {
       quantityRow.appendChild(quantityInput);
       productItem.appendChild(quantityRow);
     }
-
-    sectionItem.appendChild(productItem);
-    
+    if (typeof productItem !== "undefined") {
+      sectionItem.appendChild(productItem);
+    }
   }
-  s2.appendChild(sectionItem);
+  if (typeof sectionItem !== "undefined") {
+    console.log(sectionItem);
+    s2.appendChild(sectionItem);
+  }
 }
 }
 

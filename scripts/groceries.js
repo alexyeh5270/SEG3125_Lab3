@@ -7,8 +7,8 @@ var products = [
     vegetarian: true,
     glutenFree: true,
     organic: true,
-    category: "Vegetables", // MOD: categorize products (Lab 3 structure requirement)
-    price: 1.99,
+    category: "Vegetables",
+    price: 4.49,
     imageUrl: "assets/broccoli.png",
   },
   {
@@ -16,8 +16,8 @@ var products = [
     vegetarian: true,
     glutenFree: false,
     organic: false,
-    category: "Grains", // MOD: categorize products
-    price: 2.35,
+    category: "Grains",
+    price: 4.29,
     imageUrl: "assets/bread.png",
   },
   {
@@ -25,17 +25,17 @@ var products = [
     vegetarian: false,
     glutenFree: true,
     organic: true,
-    category: "Seafood", // MOD: categorize products
-    price: 10.0,
+    category: "Seafood",
+    price: 16.99,
     imageUrl: "assets/salmon.png",
   },
   {
-    name: "Potato",
+    name: "Potatos",
     vegetarian: true,
     glutenFree: true,
     organic: false,
-    category: "Vegetables", // MOD: categorize products
-    price: 1.49,
+    category: "Vegetables",
+    price: 3.49,
     imageUrl: "assets/potato.png",
   },
   {
@@ -43,8 +43,8 @@ var products = [
     vegetarian: true,
     glutenFree: true,
     organic: true,
-    category: "Vegetables", // MOD: categorize products
-    price: 1.29,
+    category: "Vegetables",
+    price: 3.49,
     imageUrl: "assets/carrot.png",
   },
   {
@@ -52,8 +52,8 @@ var products = [
     vegetarian: true,
     glutenFree: false,
     organic: false,
-    category: "Grains", // MOD: categorize products
-    price: 2.99,
+    category: "Grains",
+    price: 4.49,
     imageUrl: "assets/pasta.png",
   },
   {
@@ -61,8 +61,8 @@ var products = [
     vegetarian: true,
     glutenFree: true,
     organic: true,
-    category: "Vegetables", // MOD: categorize products
-    price: 1.99,
+    category: "Vegetables",
+    price: 3.79,
     imageUrl: "assets/celery.png",
   },
   {
@@ -70,8 +70,8 @@ var products = [
     vegetarian: false,
     glutenFree: true,
     organic: false,
-    category: "Meat", // MOD: categorize products
-    price: 7.49,
+    category: "Meat",
+    price: 11.99,
     imageUrl: "assets/chicken.png",
   },
   {
@@ -79,8 +79,8 @@ var products = [
     vegetarian: true,
     glutenFree: true,
     organic: false,
-    category: "Grains", // MOD: categorize products
-    price: 3.99,
+    category: "Grains",
+    price: 6.99,
     imageUrl: "assets/rice.png",
   },
   {
@@ -88,44 +88,53 @@ var products = [
     vegetarian: true,
     glutenFree: false,
     organic: false,
-    category: "Snacks", // MOD: categorize products
-    price: 3.49,
+    category: "Snacks",
+    price: 5.49,
     imageUrl: "assets/biscuits.png",
   },
 ];
 
-
-// given restrictions provided, make a reduced list of products
-// prices should be included in this list, as well as a sort based on price
-
+// Filters and sorts products based on user restrictions
 function restrictListProducts(prods, restriction) {
   let product_names = [];
-  // sort a shallow copy to avoid mutating the global products array; stable list + sorted by price (required)
   let sortedProds = [...prods].sort((a, b) => a.price - b.price);
 
-  //  ensures display is sorted by price (required)
   for (let i = 0; i < sortedProds.length; i += 1) {
     let p = sortedProds[i];
 
-    // MOD: restriction is now an object: { vegetarian: bool, glutenFree: bool, organicPref: "any"|"organic"|"nonOrganic" }
-    let okVeg = !restriction.vegetarian || p.vegetarian === true; // MOD: supports vegetarian OR not
-    let okGluten = !restriction.glutenFree || p.glutenFree === true; // MOD: supports gluten-free OR not
-
-    // MOD: apply organic preference (required)
+    let okVeg = !restriction.vegetarian || p.vegetarian === true;
+    let okGluten = !restriction.glutenFree || p.glutenFree === true;
     let okOrganic =
       restriction.organicPref === "any" ||
       (restriction.organicPref === "organic" && p.organic === true) ||
       (restriction.organicPref === "nonOrganic" && p.organic === false);
 
-    // ORIGINAL: long if/else chain on string restriction values...
-    // MOD: unified condition supports vegetarian AND/OR gluten-free plus organic preference
     if (okVeg && okGluten && okOrganic) {
-      // combined filter logic (required)
-      product_names.push(p.name); // keep return type the same (names)
+      product_names.push(p.name);
     }
   }
 
-  return searchProducts(product_names,document.getElementById("searchBar").value);
+  return searchProducts(
+    product_names,
+    document.getElementById("searchBar").value,
+  );
+}
+
+function searchProducts(prods, searchTerm) {
+  let product_names = [];
+  let lowerSearchTerm = searchTerm.toLowerCase();
+
+  for (let i = 0; i < prods.length; i += 1) {
+    let p = prods[i];
+    if (p.toLowerCase().includes(lowerSearchTerm)) {
+      product_names.push(p);
+    }
+  }
+
+  return searchProducts(
+    product_names,
+    document.getElementById("searchBar").value,
+  );
 }
 
 function searchProducts(prods, searchTerm) {

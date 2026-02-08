@@ -1,13 +1,14 @@
 // Global variable to store product selections and quantities across tab switches
 var productSelections = {};
 
+// Returns dictionary of products, key: category, value: products in categoryu
 function categorizeProducts() {
   var categories = {};
-  products.forEach(function (product) {
-    if (!categories[product.category]) {
+  products.forEach(function (product) { //Loops through each product
+    if (!categories[product.category]) {  //If category not in dictionary, initialize empty array 
       categories[product.category] = [];
     }
-    categories[product.category].push(product.name);
+    categories[product.category].push(product.name); //Push product.name to its category
   });
   return categories;
 }
@@ -62,15 +63,16 @@ function populateListProductChoices(slct1, slct2) {
     });
   }
 
+  // Categorize all the products in the optionArray in dictionary with key:value category:product
   categories = categorizeProducts();
 
+  // Copy optionArray
   var tempOptionArray = [];
-
   for (let x = 0; x < optionArray.length; x++) {
     tempOptionArray.push(optionArray[x]);
   }
 
-
+// Iterates through each category
 for (var category in categories) {
   optionArray = tempOptionArray.filter(function (name) {
     return categories[category].includes(name);
@@ -80,7 +82,7 @@ for (var category in categories) {
   if (optionArray.length > 0) {
     var sectionItem = document.createElement("section");
     sectionItem.className = "categorySection";
-    var categoryHeader = document.createElement("h3");
+    var categoryHeader = document.createElement("h4");
     categoryHeader.textContent = category;
     s2.appendChild(categoryHeader);
   }

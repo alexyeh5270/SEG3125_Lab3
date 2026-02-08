@@ -241,7 +241,7 @@ button:hover {
   box-shadow: 0 4px 12px rgba(45, 127, 62, 0.4);
 }
 
-
+/* Each product in category section will be displayed horizontally */
 #displayProduct .categorySection {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -249,9 +249,12 @@ button:hover {
   margin-bottom: 20px;
 }
 
-#displayProduct h3 {
+/* Each h4 (category title) will take up its own row */
+#displayProduct h4 {
   display: grid;
   grid-template-rows: auto auto;
+  color: #2d7f3e;
+  
 }
 
 

@@ -193,7 +193,6 @@ button {
 }
 
 button:hover {
-  transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(45, 127, 62, 0.4);
 }
 
@@ -233,10 +232,40 @@ button:hover {
 
 .productItem label {
   flex: 1;
-  cursor: pointer;
+  cursor: default;
   color: #333;
   font-size: 15px;
   font-weight: 500;
+  pointer-events: none;
+}
+
+.quantityRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quantityAdd {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 50%; /* Makes the button circular */
+  background: #4caf50;
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: 700;
+  padding-bottom: 3px;
+}
+
+.quantityRemove {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 50%;
+  background: #c20f0f;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .productImage {

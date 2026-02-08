@@ -134,9 +134,29 @@ ul.breadcrumb li a:hover {
   font-weight: 600;
 }
 
+.productsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.productsHeader h3 {
+  margin: 0;
+}
+
+.productsHeader #searchBar {
+  width: min(320px, 100%);
+  margin: 0;
+}
+
 .tabcontent p {
   color: #666;
   font-size: 16px;
+}
+
+.productsHeader + p {
+  margin-top: 10px;
 }
 
 fieldset {

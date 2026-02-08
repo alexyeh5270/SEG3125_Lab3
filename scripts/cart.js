@@ -11,7 +11,7 @@ function selectedItems() {
   para.appendChild(document.createElement("br"));
 
   //iterates through all the checkboxes to see which were selected
-  for (i = 0; i < ele.length; i++) {
+  for (var i = 0; i < ele.length; i++) {
     if (ele[i].checked) {
       var product = products.find((p) => p.name === ele[i].value);
 
@@ -40,9 +40,6 @@ function selectedItems() {
       cartItem.appendChild(
         document.createTextNode(
           "Price: $" + (product.price * quantity).toFixed(2), //sums total price for each item based on quantity
-        ),
-        document.createTextNode(
-          ele[i].value + organicTag + " - $" + product.price,
         ),
       );
 

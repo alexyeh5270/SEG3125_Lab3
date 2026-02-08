@@ -8,7 +8,7 @@ window.addEventListener("DOMContentLoaded", function () {
   populateListProductChoices("dietSelect", "displayProduct");
 });
 
-const search = document.getElementById("searchBar");
+var search = document.getElementById("searchBar");
 if (search) {
   search.addEventListener("input", function () {
     populateListProductChoices("dietSelect", "displayProduct");

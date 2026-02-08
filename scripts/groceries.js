@@ -30,7 +30,7 @@ var products = [
     imageUrl: "assets/salmon.png",
   },
   {
-    name: "Potatos",
+    name: "Potatoes",
     vegetarian: true,
     glutenFree: true,
     organic: false,
@@ -114,27 +114,9 @@ function restrictListProducts(prods, restriction) {
     }
   }
 
-  return searchProducts(
-    product_names,
-    document.getElementById("searchBar").value,
-  );
-}
-
-function searchProducts(prods, searchTerm) {
-  let product_names = [];
-  let lowerSearchTerm = searchTerm.toLowerCase();
-
-  for (let i = 0; i < prods.length; i += 1) {
-    let p = prods[i];
-    if (p.toLowerCase().includes(lowerSearchTerm)) {
-      product_names.push(p);
-    }
-  }
-
-  return searchProducts(
-    product_names,
-    document.getElementById("searchBar").value,
-  );
+  var searchBar = document.getElementById("searchBar");
+  var searchValue = searchBar ? searchBar.value : "";
+  return searchProducts(product_names, searchValue);
 }
 
 function searchProducts(prods, searchTerm) {

@@ -28,7 +28,6 @@
             <a
               id="defaultOpen"
               class="tablinks"
-              data-tab="Client"
               onclick="openInfo(event, 'Client')"
               ><img
                 src="assets/profile.png"
@@ -177,7 +176,13 @@
       <!-- Targeted Products -->
       <div class="productsHeader">
         <h3>Your Targeted Products</h3>
-        <input id="searchBar" type="text" placeholder="Search Products..." />
+        <div class="productsControls">
+          <select id="sortSelect" onchange="populateListProductChoices('dietSelect', 'displayProduct')">
+            <option value="low-high">Price: Low to High</option>
+            <option value="high-low">Price: High to Low</option>
+          </select>
+          <input id="searchBar" type="text" placeholder="Search Products..." />
+        </div>
       </div>
       <p>We preselected products based on your preferences.</p>
       <div id="displayProduct"></div>

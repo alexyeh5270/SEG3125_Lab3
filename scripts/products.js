@@ -29,6 +29,28 @@ function populateListProductChoices(slct1, slct2) {
 
   var optionArray = restrictListProducts(products, getUserRestriction());
 
+  // Sort products based on selected sort option
+  var sortSelect = document.getElementById("sortSelect");
+  var sortValue = sortSelect ? sortSelect.value : "low-high";
+
+  optionArray.sort(function (aName, bName) {
+    var a = products.find((p) => p.name === aName);
+    var b = products.find((p) => p.name === bName);
+    if (!a || !b) return 0;
+    if (sortValue === "high-low") {
+      return b.price - a.price;
+    }
+    return a.price - b.price;
+  });
+
+  var searchInput = document.getElementById("searchBar");
+  var searchValue = searchInput ? searchInput.value.trim().toLowerCase() : "";
+  if (searchValue) {
+    optionArray = optionArray.filter(function (name) {
+      return name.toLowerCase().includes(searchValue);
+    });
+  }
+
   //iterates through the options array and sets up elements for the display of products
   for (let i = 0; i < optionArray.length; i++) {
     let productName = optionArray[i];

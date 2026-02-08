@@ -158,6 +158,18 @@ ul.breadcrumb li a.disabled:hover {
   margin: 0;
 }
 
+.productsControls {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#sortSelect {
+  height: 42px;
+  padding-right: 32px;
+  background-color: #ffffff;
+}
+
 .productsHeader #searchBar {
   width: min(320px, 100%);
   margin: 0;

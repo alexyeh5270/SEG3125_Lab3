@@ -1,6 +1,17 @@
 // Global variable to store product selections and quantities across tab switches
 var productSelections = {};
 
+function categorizeProducts() {
+  var categories = {};
+  products.forEach(function (product) {
+    if (!categories[product.category]) {
+      categories[product.category] = [];
+    }
+    categories[product.category].push(product.name);
+  });
+  return categories;
+}
+
 // Generates a checkbox list of products based on user preferences
 function populateListProductChoices(slct1, slct2) {
   var s1 = document.getElementById(slct1);
@@ -51,6 +62,28 @@ function populateListProductChoices(slct1, slct2) {
     });
   }
 
+  categories = categorizeProducts();
+
+  var tempOptionArray = [];
+
+  for (let x = 0; x < optionArray.length; x++) {
+    tempOptionArray.push(optionArray[x]);
+  }
+
+
+for (var category in categories) {
+  optionArray = tempOptionArray.filter(function (name) {
+    return categories[category].includes(name);
+  });
+
+ // creates a new section for each category
+  if (optionArray.length > 0) {
+    var sectionItem = document.createElement("section");
+    sectionItem.className = "categorySection";
+    var categoryHeader = document.createElement("h3");
+    categoryHeader.textContent = category;
+    s2.appendChild(categoryHeader);
+  }
   //iterates through the options array and sets up elements for the display of products
   for (let i = 0; i < optionArray.length; i++) {
     let productName = optionArray[i];
@@ -140,8 +173,11 @@ function populateListProductChoices(slct1, slct2) {
       productItem.appendChild(quantityRow);
     }
 
-    s2.appendChild(productItem);
+    sectionItem.appendChild(productItem);
+    
   }
+  s2.appendChild(sectionItem);
+}
 }
 
 //adds a quantity input field when a product is selected

@@ -1,45 +1,70 @@
 <!doctype html>
 <html lang="en">
-  <!-- MOD: add lang for accessibility/semantics -->
-
   <head>
-    <!-- This style sheet is taken from https://www.w3schools.com/howto/howto_js_tabs.asp -->
-
+    <meta charset="utf-8" />
     <title>AAM Grocery Store</title>
     <link href="styles/style.css" rel="stylesheet" type="text/css" />
   </head>
 
   <body>
-    <h1 class="storeName">AAM Grocery Store</h1>
-    <!-- add class hook for styling store name (required styling target) -->
+    <!-- Tab navigation and branding -->
+    <header>
+      <div class="tab">
+        <div id="logo-box">
+          <img
+            src="assets/logo.png"
+            alt="AAM Grocery Store Logo"
+            class="logo"
+            height="75"
+          />
+          <div id="store-name">
+            <h1 class="storeName">Grocery</h1>
+            <h1 class="storeName">Market</h1>
+          </div>
+        </div>
 
-    <!-- Tab links, each one with an onclick event associated with it -->
-    <div class="tab">
-      <!-- MOD: add id so JS can auto-click this tab -->
-      <button
-        id="defaultOpen"
-        class="tablinks"
-        onclick="openInfo(event, 'Client')"
-      >
-        Client
-      </button>
-
-      <button class="tablinks" onclick="openInfo(event, 'Products')">
-        Products
-      </button>
-      <button class="tablinks" onclick="openInfo(event, 'Cart')">Cart</button>
-    </div>
+        <ul class="breadcrumb">
+          <li>
+            <a
+              id="defaultOpen"
+              class="tablinks"
+              onclick="openInfo(event, 'Client')"
+              ><img
+                src="assets/profile.png"
+                alt="Profile"
+                class="breadcrumb-icon"
+              />
+              Client</a
+            >
+          </li>
+          <li>
+            <a class="tablinks" onclick="openInfo(event, 'Products')"
+              ><img
+                src="assets/products.png"
+                alt="Products"
+                class="breadcrumb-icon"
+              />
+              Products</a
+            >
+          </li>
+          <li>
+            <a class="tablinks" onclick="openInfo(event, 'Cart')"
+              ><img src="assets/cart.png" alt="Cart" class="breadcrumb-icon" />
+              Cart</a
+            >
+          </li>
+        </ul>
+      </div>
+    </header>
 
     <!-- Tab content -->
     <div id="Client" class="tabcontent">
       <h3>Client Information</h3>
       <p>Tell us a bit about you.</p>
 
-      <!-- MOD: replace single select with independent options so user can be vegetarian AND/OR gluten-free (required) -->
+      <!-- User preferences and accessibility options -->
       <fieldset class="optionsBox">
-        <!-- MOD: grouped controls for clarity -->
         <legend>Dietary restrictions</legend>
-        <!-- MOD: clearer label than "Choose a Category" -->
         <label>
           <input
             type="checkbox"
@@ -62,11 +87,8 @@
         </label>
       </fieldset>
 
-      <!-- MOD: add organic preference (required) -->
       <fieldset class="optionsBox">
-        <!-- MOD -->
         <legend>Organic preference</legend>
-        <!-- MOD -->
         <label>
           <input
             type="radio"
@@ -103,9 +125,8 @@
         </label>
       </fieldset>
 
-      <!-- larger text for Lucie (accessibility) -->
+      <!-- Accessibility options -->
       <fieldset class="optionsBox">
-        <!-- MOD: aggregate text-size choices -->
         <legend>Text size</legend>
         <label>
           <input
@@ -137,41 +158,51 @@
         </label>
       </fieldset>
 
-      <!-- MOD: keep an invisible element with the original id to avoid breaking older JS that expects dietSelect -->
+      <!-- Hidden element for backwards compatibility -->
       <select id="dietSelect" name="dietSelect" style="display: none">
-        <!--  compatibility placeholder -->
         <option value="None">None</option>
-        <!--  default value if JS still reads it -->
       </select>
     </div>
 
+    <!-- Product Tab Content -->
     <div id="Products" class="tabcontent">
-      <h3>Your targeted products</h3>
+      <!-- Targeted Products -->
+      <h3>Your Targeted Products</h3>
       <p>We preselected products based on your restrictions.</p>
-      Choose items to buy:
       <div id="displayProduct"></div>
+
       <button
         id="addCart"
         type="button"
         class="block"
         onclick="selectedItems()"
       >
-        Add selected items to cart.
+        Update Cart
       </button>
     </div>
 
+    <!-- Cart Tab Content -->
     <div id="Cart" class="tabcontent">
       <h3>Cart</h3>
       <p>Here is your cart.</p>
-      <div id="displayCart"></div>
+      <div id="displayCart">
+        <p>No items added to cart.</p>
+      </div>
     </div>
 
-    <!-- required signature/footer -->
+    <div id="snackbar">Items added to cart!</div>
+
     <footer class="signature">
       Website designed by Alexander Seiffert, Alexander Yeh, and Macintosh Chen
     </footer>
 
+    <!-- links to scripts -->
     <script src="scripts/groceries.js"></script>
+    <script src="scripts/navigation.js"></script>
+    <script src="scripts/preferences.js"></script>
+    <script src="scripts/products.js"></script>
+    <script src="scripts/cart.js"></script>
+    <script src="scripts/notifications.js"></script>
     <script src="scripts/main.js"></script>
   </body>
 </html>

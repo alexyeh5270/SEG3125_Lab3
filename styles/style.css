@@ -118,6 +118,19 @@ ul.breadcrumb li a:hover {
   pointer-events: none;
 }
 
+.breadcrumb a.disabled,
+ul.breadcrumb li a.disabled {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.6;
+}
+
+.breadcrumb a.disabled:hover,
+ul.breadcrumb li a.disabled:hover {
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.95);
+}
+
 .tabcontent {
   display: none;
   padding: 30px;

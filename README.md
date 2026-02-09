@@ -11,7 +11,7 @@ There are three main sections for the website:
 The user is able to input information such as dietary preferences (Vegetarian and/or Gluten-free options), preferences on organic groceries, and also change the size of the text.
 
 ## Products Page
-The user is able to see all the products available to them.  There is also the possibility of sorting by price (both low-to-high and high-to-low).  A search bar is available to search for a specific product or category.
+The user is able to see all the products available to them.  There is also the possibility of sorting by price (both low-to-high and high-to-low).  A search bar is available to search for a specific product.
 
 After selecting the products and quantities, you can click the "Update Cart" button to add the products to your cart.
 

@@ -64,12 +64,7 @@ function populateListProductChoices(slct1, slct2) {
       return name.toLowerCase().includes(searchValue);
     });
   }
-
   
-
-
-  
-  console.log("Filtered Products:", optionArray);
   // Categorize all the products in the optionArray in dictionary with key:value category:product
   categories = categorizeProducts();
 
@@ -81,16 +76,6 @@ function populateListProductChoices(slct1, slct2) {
     });
   }
 
-  for (let i = 0; i < categoriesArray.length; i++) {
-    for (let j = 0; j < products.length; j++) {
-      if (
-        products[j].category === categoriesArray[i] &&
-        !optionArray.includes(products[j].name)
-      ) {
-        optionArray.push(products[j].name);
-      }
-    }
-  }
 
   // Copy optionArray
   var tempOptionArray = [];

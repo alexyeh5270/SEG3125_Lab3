@@ -76,7 +76,7 @@ function populateListProductChoices(slct1, slct2) {
     });
   }
 
-
+  optionArray = restrictListProducts(products, getUserRestriction());
   // Copy optionArray
   var tempOptionArray = [];
   for (let x = 0; x < optionArray.length; x++) {
